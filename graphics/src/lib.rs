@@ -1,5 +1,4 @@
 mod texture;
-use anyhow::*;
 use std::collections::HashMap;
 use wgpu::Backends;
 use winit::window::Window;
@@ -16,6 +15,7 @@ use self::texture::Texture;
 /// i.e. the section just says "draw the items that rendering to each buffer.
 /// and the system draws the necessary textures to each buffer, and then each buffer to the screen.
 
+#[allow(dead_code)]
 pub struct GraphicSystem {
     device: wgpu::Device,
     queue: wgpu::Queue,

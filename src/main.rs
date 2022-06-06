@@ -1,8 +1,5 @@
-mod graphics;
 mod state;
 mod vertex;
-
-use std::fs::File;
 
 use filesystem::*;
 use state::State;

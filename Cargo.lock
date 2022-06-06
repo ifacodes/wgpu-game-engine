@@ -550,6 +550,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "graphics"
+version = "0.1.0"
+dependencies = [
+ "wgpu",
+ "winit",
+]
+
+[[package]]
 name = "hashbrown"
 version = "0.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1327,6 +1335,7 @@ dependencies = [
  "bytemuck",
  "env_logger",
  "filesystem",
+ "graphics",
  "image",
  "log",
  "pollster",
