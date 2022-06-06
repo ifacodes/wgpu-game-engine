@@ -3,6 +3,23 @@ name = "the-return-of-wgpu"
 version = "0.1.0"
 edition = "2021"
 
+[workspace]
+members = [
+    "filesystem",
+]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+wgpu = { git = "https://github.com/gfx-rs/wgpu" }
+winit = "0.26.1"
+env_logger = "0.9.0"
+log = "0.4.17"
+pollster = "0.2"
+bytemuck = { version = "1.4.0", features = [ "derive"] }
+anyhow = "1.0"
+filesystem = { path = "filesystem" }
+
+[dependencies.image]
+version = "0.24"
+default-features = false
+features = ["png", "jpeg"]
