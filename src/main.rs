@@ -1,3 +1,4 @@
+mod app;
 mod state;
 mod vertex;
 
@@ -14,8 +15,7 @@ async fn run() {
     env_logger::init();
     let event_loop = EventLoop::new();
     let window = WindowBuilder::new().build(&event_loop).unwrap();
-    let mut filesystem = FileSystem::new().unwrap();
-    filesystem.watch("./resources").unwrap();
+    let filesystem = FileSystem::new("/resources", "./resources").unwrap();
 
     let mut state = State::new(&window).await;
 

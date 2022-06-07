@@ -16,12 +16,11 @@ fn new_watcher() {
 
 #[test]
 fn new_filesystem() {
-    let filesystem = FileSystem::new();
+    let filesystem = FileSystem::new("/resources", "../resources");
     assert!(filesystem.is_ok());
 }
 
-#[test]
-fn filesystem_watch() {
-    let mut filesystem = FileSystem::new().unwrap();
-    assert!(filesystem.watch("../resources").is_ok());
-}
+// #[test]
+// fn filesystem_watch() {
+//     let filesystem = FileSystem::new("/resources", "../resources").unwrap();
+// }

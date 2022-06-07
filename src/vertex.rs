@@ -5,6 +5,7 @@ pub struct Vertex {
     tex_coords: [f32; 2],
 }
 
+#[allow(dead_code)]
 impl Vertex {
     pub fn desc<'a>() -> wgpu::VertexBufferLayout<'a> {
         wgpu::VertexBufferLayout {
@@ -28,28 +29,3 @@ impl Vertex {
         }
     }
 }
-
-pub const VERTICES: &[Vertex] = &[
-    Vertex {
-        position: [0.35, 0.5, 0.0],
-        tex_coords: [1.0, 0.0],
-    },
-    Vertex {
-        position: [-0.35, 0.5, 0.0],
-        tex_coords: [0.0, 0.0],
-    },
-    Vertex {
-        position: [-0.35, -0.5, 0.0],
-        tex_coords: [0.0, 1.0],
-    },
-    Vertex {
-        position: [0.35, -0.5, 0.0],
-        tex_coords: [1.0, 1.0],
-    },
-];
-
-#[rustfmt::skip]
-pub const INDICES: &[u16] = &[
-    0, 1, 3,
-    1, 2, 3
-];

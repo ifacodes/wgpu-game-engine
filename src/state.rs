@@ -1,5 +1,3 @@
-use crate::vertex::*;
-use wgpu::util::DeviceExt;
 use winit::{event::*, window::Window};
 
 pub struct State {
@@ -94,7 +92,7 @@ impl State {
             });
 
         {
-            let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+            let _ = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
                 label: Some("Render Pass"),
                 // draw the color to the TextureView
                 color_attachments: &[wgpu::RenderPassColorAttachment {

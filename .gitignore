@@ -1,3 +1,5 @@
 /target
 /resources
 .DS_Store
+/filesystem/src/builder.rs
+/filesystem/src/filecache.rs
