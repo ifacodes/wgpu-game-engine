@@ -8,4 +8,4 @@ edition = "2021"
 [dependencies]
 notify = "4.0.16"
 anyhow = "1.0"
-mini-fs = "0.2.2"
+mini-fs = { git = "https://github.com/ifacodes/mini-fs/"}

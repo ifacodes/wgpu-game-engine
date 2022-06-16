@@ -7,7 +7,7 @@ pub struct State {
     config: wgpu::SurfaceConfiguration,
     pub size: winit::dpi::PhysicalSize<u32>, //temp pub
 }
-
+#[allow(dead_code)]
 impl State {
     pub async fn new(window: &Window) -> Self {
         let size = window.inner_size();

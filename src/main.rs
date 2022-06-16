@@ -2,8 +2,7 @@ mod app;
 mod state;
 mod vertex;
 
-use filesystem::*;
-use state::State;
+use app::*;
 
 use winit::{
     event::*,
@@ -15,16 +14,14 @@ async fn run() {
     env_logger::init();
     let event_loop = EventLoop::new();
     let window = WindowBuilder::new().build(&event_loop).unwrap();
-    let filesystem = FileSystem::new("/resources", "./resources").unwrap();
-
-    let mut state = State::new(&window).await;
+    let mut app = App::new(&window).await.unwrap();
 
     event_loop.run(move |event, _, control_flow| match event {
         Event::WindowEvent {
             ref event,
             window_id,
         } if window_id == window.id() => {
-            if !state.input(event) {
+            if app.handle_input(event).is_ok() {
                 match event {
                     WindowEvent::CloseRequested
                     | WindowEvent::KeyboardInput {
@@ -37,25 +34,21 @@ async fn run() {
                         ..
                     } => *control_flow = ControlFlow::Exit,
                     WindowEvent::Resized(physical_size) => {
-                        state.resize(*physical_size);
+                        app.handle_window_resize(*physical_size);
                     }
                     WindowEvent::ScaleFactorChanged { new_inner_size, .. } => {
-                        state.resize(**new_inner_size);
+                        app.handle_window_resize(**new_inner_size);
                     }
                     _ => {}
                 }
             }
         }
-        Event::RedrawRequested(window_id) if window_id == window.id() => {
-            filesystem.handle_events();
-            state.update();
-            match state.render() {
-                Ok(_) => {}
-                Err(wgpu::SurfaceError::Lost) => state.resize(state.size),
-                Err(wgpu::SurfaceError::OutOfMemory) => *control_flow = ControlFlow::Exit,
-                Err(e) => eprintln!("{:?}", e),
-            }
-        }
+        Event::RedrawRequested(window_id) if window_id == window.id() => match app.update() {
+            Ok(_) => {}
+            Err(wgpu::SurfaceError::Lost) => app.handle_window_resize(app.window_size),
+            Err(wgpu::SurfaceError::OutOfMemory) => *control_flow = ControlFlow::Exit,
+            Err(e) => eprintln!("{:?}", e),
+        },
         Event::MainEventsCleared => window.request_redraw(),
         _ => {}
     });

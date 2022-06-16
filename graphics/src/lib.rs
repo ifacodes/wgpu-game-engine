@@ -1,9 +1,12 @@
+mod pipeline;
+mod sampler;
 mod texture;
-use std::collections::HashMap;
-use wgpu::Backends;
-use winit::window::Window;
-
 use self::texture::Texture;
+use cgmath::Vector2;
+use std::collections::HashMap;
+use texture::TextureMut;
+use wgpu::Backends;
+use winit::{dpi::PhysicalSize, window::Window};
 
 /// The graphics system needs to simply:
 /// - load the wgpu stuff
@@ -14,6 +17,74 @@ use self::texture::Texture;
 /// the section contains all the texture info, and the system simply handles the rendering and organising of it.
 /// i.e. the section just says "draw the items that rendering to each buffer.
 /// and the system draws the necessary textures to each buffer, and then each buffer to the screen.
+///
+
+// Placeholder
+type Key = String;
+
+fn new_texture(
+    device: &wgpu::Device,
+    size: Vector2<usize>,
+    format: wgpu::TextureFormat,
+) -> wgpu::Texture {
+    device.create_texture(&wgpu::TextureDescriptor {
+        size: wgpu::Extent3d {
+            width: size.x as u32,
+            height: size.y as u32,
+            depth_or_array_layers: 1,
+        },
+        mip_level_count: 1,
+        sample_count: 1,
+        dimension: wgpu::TextureDimension::D2,
+        format,
+        usage: wgpu::TextureUsages::COPY_DST | wgpu::TextureUsages::TEXTURE_BINDING,
+        label: None,
+    })
+}
+
+// fn load_texture(&mut self, key: Key, bytes: &[u8], size: Vector2<usize>) {
+//     let texture = new_texture(
+//         &self.system.device,
+//         size,
+//         wgpu::TextureFormat::Rgba8UnormSrgb,
+//     );
+//     self.system.queue.write_texture(
+//         texture.as_image_copy(),
+//         bytes,
+//         wgpu::ImageDataLayout {
+//             offset: 0,
+//             bytes_per_row: std::num::NonZeroU32::new(4 * size.x as u32),
+//             rows_per_image: std::num::NonZeroU32::new(size.y as u32),
+//         },
+//         wgpu::Extent3d {
+//             width: size.x as u32,
+//             height: size.y as u32,
+//             depth_or_array_layers: 1,
+//         },
+//     );
+//     self.textures.insert(
+//         key,
+//         Texture {
+//             texture,
+//             size,
+//             format: wgpu::TextureFormat::Rgba8UnormSrgb,
+//             render_target: false,
+//         },
+//     );
+// }
+
+// pub fn get_texture(&self, key: &Key) -> Option<&Texture> {
+//     self.textures.get(key)
+// }
+
+// pub fn get_texture_mut(&mut self, key: &Key) -> Option<TextureMut> {
+//     let texture = self.textures.get_mut(key)?;
+//     Some(TextureMut {
+//         texture,
+//         device: &self.system.device,
+//         queue: &self.system.queue,
+//     })
+// }
 
 #[allow(dead_code)]
 pub struct GraphicSystem {
@@ -21,7 +92,7 @@ pub struct GraphicSystem {
     queue: wgpu::Queue,
     surface: wgpu::Surface,
     surface_config: wgpu::SurfaceConfiguration,
-    textures: HashMap<String, Texture>,
+    size: PhysicalSize<u32>,
 }
 
 impl GraphicSystem {
@@ -29,7 +100,6 @@ impl GraphicSystem {
         let size = window.inner_size();
         let instance = wgpu::Instance::new(Backends::all());
         let surface = unsafe { instance.create_surface(window) };
-
         let adapter = instance
             .request_adapter(&wgpu::RequestAdapterOptions {
                 power_preference: wgpu::PowerPreference::default(),
@@ -38,7 +108,6 @@ impl GraphicSystem {
             })
             .await
             .unwrap();
-
         let (device, queue) = adapter
             .request_device(
                 &wgpu::DeviceDescriptor {
@@ -66,33 +135,33 @@ impl GraphicSystem {
             queue,
             surface,
             surface_config,
-            textures: HashMap::new(),
+            size,
         }
     }
 
-    #[allow(dead_code)]
-    pub fn resize_surface(&mut self) {
-        todo!()
-    }
+    // #[allow(dead_code)]
+    // pub fn resize_surface(&mut self) {
+    //     todo!()
+    // }
 
-    pub fn draw_to_view(
-        view: &wgpu::TextureView,
-        encoder: &mut wgpu::CommandEncoder,
-        pipeline: &wgpu::RenderPipeline,
-    ) {
-        let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
-            label: Some("Render Pass"),
-            color_attachments: &[wgpu::RenderPassColorAttachment {
-                view,
-                resolve_target: None,
-                ops: wgpu::Operations {
-                    load: wgpu::LoadOp::Clear(wgpu::Color::BLACK),
-                    store: true,
-                },
-            }],
-            depth_stencil_attachment: None,
-        });
+    // pub fn draw_to_view(
+    //     view: &wgpu::TextureView,
+    //     encoder: &mut wgpu::CommandEncoder,
+    //     pipeline: &wgpu::RenderPipeline,
+    // ) {
+    //     let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+    //         label: Some("Render Pass"),
+    //         color_attachments: &[wgpu::RenderPassColorAttachment {
+    //             view,
+    //             resolve_target: None,
+    //             ops: wgpu::Operations {
+    //                 load: wgpu::LoadOp::Clear(wgpu::Color::BLACK),
+    //                 store: true,
+    //             },
+    //         }],
+    //         depth_stencil_attachment: None,
+    //     });
 
-        render_pass.set_pipeline(pipeline);
-    }
+    //     render_pass.set_pipeline(pipeline);
+    // }
 }

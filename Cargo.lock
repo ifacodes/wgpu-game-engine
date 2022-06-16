@@ -41,6 +41,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "08f9b8508dccb7687a1d6c4ce66b2b0ecef467c94667de27d8d7fe1f8d2a9cdc"
 
 [[package]]
+name = "approx"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3f2a05fd1bd10b2527e20a2cd32d8873d115b8b39fe219ee25f42a8aca6ba278"
+dependencies = [
+ "num-traits",
+]
+
+[[package]]
 name = "arrayvec"
 version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -185,6 +194,16 @@ name = "cfg_aliases"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fd16c4719339c4530435d38e511904438d07cce7950afa3718a84ac36c10e89e"
+
+[[package]]
+name = "cgmath"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1a98d30140e3296250832bbaaff83b27dcd6fa3cc70fb6f1f3e5c9c0023b5317"
+dependencies = [
+ "approx",
+ "num-traits",
+]
 
 [[package]]
 name = "cocoa"
@@ -586,6 +605,7 @@ dependencies = [
 name = "graphics"
 version = "0.1.0"
 dependencies = [
+ "cgmath",
  "wgpu",
  "winit",
 ]
@@ -837,8 +857,7 @@ dependencies = [
 [[package]]
 name = "mini-fs"
 version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "def96ec7be825058f3ac8a9232441a20052ec8d182341c4dfe7a6c169f0e7b3a"
+source = "git+https://github.com/ifacodes/mini-fs/#2a30cfe99856cbf3194eafd60c3af771cb7ac662"
 dependencies = [
  "flate2",
  "tar",

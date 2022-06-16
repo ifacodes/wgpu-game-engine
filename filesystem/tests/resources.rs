@@ -20,7 +20,11 @@ fn new_filesystem() {
     assert!(filesystem.is_ok());
 }
 
-// #[test]
-// fn filesystem_watch() {
-//     let filesystem = FileSystem::new("/resources", "../resources").unwrap();
-// }
+#[test]
+fn filesystem_open() {
+    let filesystem = FileSystem::new("/resources", "../resources").unwrap();
+    let file = filesystem.open("/resources/images/ifa_pic.jpeg");
+    assert!(file.is_ok());
+    let file = file.unwrap();
+    println!("{:?}", file)
+}
