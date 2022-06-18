@@ -1,53 +1,63 @@
 use anyhow::Result;
+
 use notify::RecommendedWatcher;
-use std::any::TypeId;
-use std::borrow::Cow;
-use std::collections::HashMap;
+use std::collections::HashSet;
 use std::fmt::Formatter;
+
 use std::path::{Path, PathBuf};
 
-use crate::assets::loader::Loader;
-use crate::assets::Asset;
+use crate::assets::Load;
 
 /// Filesystem
+
+#[derive(Default, Debug, PartialEq)]
 pub struct FileSystem {
-    pub watcher: Option<RecommendedWatcher>,
-    pub path: PathBuf,
-    pub cache: HashMap<AssetKey, String>,
+    watcher: Watcher,
+    path: PathBuf,
+    loaded: HashSet<PathBuf>,
 }
-
-impl std::fmt::Debug for FileSystem {
-    fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
-        f.debug_struct("FileSystem")
-            .field("watcher", &self.watcher.is_some())
-            .field("path", &self.path)
-            .finish()
-    }
-}
-
-impl PartialEq for FileSystem {
-    fn eq(&self, other: &Self) -> bool {
-        self.watcher.is_some() == other.watcher.is_some() && self.path == other.path
-    }
-}
-
-impl Eq for FileSystem {}
 
 impl FileSystem {
-    pub fn load<A, P>(&self, path: P) -> Result<()>
+    pub fn new<P>(path: P) -> Self
     where
-        A: Asset + std::fmt::Debug,
-        P: AsRef<Path>,
+        P: Into<PathBuf>,
     {
-        let bytes: Cow<[u8]> = std::fs::read(path).map(Into::into)?;
-        let result = A::Loader::load(bytes)?;
-        println!("{:?}", result);
-        Ok(())
+        Self {
+            path: path.into(),
+            ..Default::default()
+        }
+    }
+    pub fn new_with_watcher<P>(_path: P) -> Self
+    where
+        P: Into<PathBuf> + AsRef<Path>,
+    {
+        todo!()
+    }
+
+    pub fn load<A>(&mut self, path: &str) -> Result<A>
+    where
+        A: Load,
+    {
+        if let Ok(asset) = A::load(std::fs::read(path)?.into()) {
+            self.loaded.insert(path.into());
+            Ok(asset)
+        } else {
+            Err(anyhow::anyhow!("TODO: Write error message lmao!"))
+        }
     }
 }
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct AssetKey {
-    version: usize,
-    id: TypeId,
+#[derive(Default)]
+struct Watcher(Option<RecommendedWatcher>);
+
+impl std::fmt::Debug for Watcher {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        f.write_fmt(format_args!("{}", self.0.is_some()))
+    }
+}
+
+impl PartialEq for Watcher {
+    fn eq(&self, other: &Self) -> bool {
+        self.0.is_some() == other.0.is_some()
+    }
 }
