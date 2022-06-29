@@ -38,7 +38,7 @@ fn new_filesystem() {
 fn load_texture() {
     let mut fs = FileSystem::new("../");
     assert!(fs
-        .load::<RawTexture>("../resources/images/ifa_pic.jpeg")
+        .load::<RawTexture>("resources/images/ifa_pic.jpeg")
         .is_ok())
 }
 
@@ -46,7 +46,7 @@ fn load_texture() {
 fn fail_to_load_texture() {
     let mut fs = FileSystem::new("../");
     assert!(fs
-        .load::<RawTexture>("../resources/images/ifa_pic.png")
+        .load::<RawTexture>("resources/images/ifa_pic.png")
         .is_err())
 }
 
@@ -54,7 +54,7 @@ fn fail_to_load_texture() {
 fn load_shader_into_string() {
     let mut fs = FileSystem::new("../");
     assert!(fs
-        .load::<RawShader>("../resources/shaders/shader.wgsl")
+        .load::<RawShader>("resources/shaders/shader.wgsl")
         .is_ok())
 }
 
@@ -62,6 +62,6 @@ fn load_shader_into_string() {
 fn fail_to_load_shader_into_string() {
     let mut fs = FileSystem::new("../");
     assert!(fs
-        .load::<RawShader>("../resources/shaders/idontexist.wgsl")
+        .load::<RawShader>("resources/shaders/idontexist.wgsl")
         .is_err())
 }

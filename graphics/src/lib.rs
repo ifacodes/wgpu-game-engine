@@ -1,10 +1,11 @@
+mod assets;
 mod pipeline;
 mod sampler;
+mod shader;
 mod texture;
-use self::texture::Texture;
-use cgmath::Vector2;
-use std::collections::HashMap;
-use texture::TextureMut;
+use assets::shader::Shader;
+pub use assets::GraphicAssets;
+use util::Lookup;
 use wgpu::Backends;
 use winit::{dpi::PhysicalSize, window::Window};
 
@@ -18,29 +19,6 @@ use winit::{dpi::PhysicalSize, window::Window};
 /// i.e. the section just says "draw the items that rendering to each buffer.
 /// and the system draws the necessary textures to each buffer, and then each buffer to the screen.
 ///
-
-// Placeholder
-type Key = String;
-
-fn new_texture(
-    device: &wgpu::Device,
-    size: Vector2<usize>,
-    format: wgpu::TextureFormat,
-) -> wgpu::Texture {
-    device.create_texture(&wgpu::TextureDescriptor {
-        size: wgpu::Extent3d {
-            width: size.x as u32,
-            height: size.y as u32,
-            depth_or_array_layers: 1,
-        },
-        mip_level_count: 1,
-        sample_count: 1,
-        dimension: wgpu::TextureDimension::D2,
-        format,
-        usage: wgpu::TextureUsages::COPY_DST | wgpu::TextureUsages::TEXTURE_BINDING,
-        label: None,
-    })
-}
 
 // fn load_texture(&mut self, key: Key, bytes: &[u8], size: Vector2<usize>) {
 //     let texture = new_texture(
@@ -93,6 +71,7 @@ pub struct GraphicSystem {
     surface: wgpu::Surface,
     surface_config: wgpu::SurfaceConfiguration,
     size: PhysicalSize<u32>,
+    shaders: Lookup<Shader>,
 }
 
 impl GraphicSystem {
@@ -136,6 +115,7 @@ impl GraphicSystem {
             surface,
             surface_config,
             size,
+            shaders: Lookup::new(),
         }
     }
 

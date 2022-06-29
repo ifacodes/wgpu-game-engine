@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 
 use notify::RecommendedWatcher;
 use std::collections::HashSet;
@@ -38,7 +38,12 @@ impl FileSystem {
     where
         A: Load,
     {
-        if let Ok(asset) = A::load(std::fs::read(path)?.into()) {
+        let fullpath = self.path.join(path);
+        if let Ok(asset) = A::load(
+            std::fs::read(&fullpath)
+                .context(format!("Unable to open file at path: {:#?}", fullpath))?
+                .into(),
+        ) {
             self.loaded.insert(path.into());
             Ok(asset)
         } else {

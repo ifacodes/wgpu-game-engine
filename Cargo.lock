@@ -742,7 +742,13 @@ dependencies = [
 name = "graphics"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "cgmath",
+ "filesystem",
+ "image",
+ "naga 0.8.0 (git+https://github.com/gfx-rs/naga)",
+ "thiserror",
+ "util",
  "wgpu",
  "winit",
 ]
@@ -1113,6 +1119,24 @@ dependencies = [
  "num-traits",
  "rustc-hash",
  "spirv",
+ "termcolor",
+ "thiserror",
+ "unicode-xid",
+]
+
+[[package]]
+name = "naga"
+version = "0.8.0"
+source = "git+https://github.com/gfx-rs/naga#ea832a9eec13560560c017072d4318d5d942e5e5"
+dependencies = [
+ "bit-set",
+ "bitflags",
+ "codespan-reporting",
+ "hexf-parse",
+ "indexmap",
+ "log",
+ "num-traits",
+ "rustc-hash",
  "termcolor",
  "thiserror",
  "unicode-xid",
@@ -1774,6 +1798,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "957e51f3646910546462e67d5f7599b9e4fb8acdd304b087a6494730f9eebf04"
 
 [[package]]
+name = "util"
+version = "0.1.0"
+
+[[package]]
 name = "uuid"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1987,7 +2015,7 @@ dependencies = [
  "arrayvec",
  "js-sys",
  "log",
- "naga",
+ "naga 0.8.0 (git+https://github.com/gfx-rs/naga?rev=571302e)",
  "parking_lot",
  "raw-window-handle",
  "smallvec",
@@ -2012,7 +2040,7 @@ dependencies = [
  "copyless",
  "fxhash",
  "log",
- "naga",
+ "naga 0.8.0 (git+https://github.com/gfx-rs/naga?rev=571302e)",
  "parking_lot",
  "profiling",
  "raw-window-handle",
@@ -2045,7 +2073,7 @@ dependencies = [
  "libloading",
  "log",
  "metal",
- "naga",
+ "naga 0.8.0 (git+https://github.com/gfx-rs/naga?rev=571302e)",
  "objc",
  "parking_lot",
  "profiling",

@@ -6,7 +6,8 @@ edition = "2021"
 [workspace]
 members = [
     "filesystem",
-    "graphics"
+    "graphics",
+    "util"
 ]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
