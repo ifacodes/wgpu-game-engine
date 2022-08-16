@@ -7,11 +7,12 @@ edition = "2021"
 
 [dependencies]
 wgpu = { git = "https://github.com/gfx-rs/wgpu" }
-winit = "0.26.1"
+winit = "0.27.2"
 cgmath = "0.18.0"
 anyhow = "1.0"
 image = "0.24.2"
 filesystem = {path = "../filesystem"}
 util = {path = "../util"}
-naga = { git = "https://github.com/gfx-rs/naga", features = ["default", "wgsl-in"] }
+naga = { git = "https://github.com/gfx-rs/naga", features = ["default", "wgsl-in", "wgsl-out"] }
 thiserror = "1.0.31"
+bytemuck = { version = "1.4.0", features = [ "derive"] }
